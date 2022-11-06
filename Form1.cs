@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp4
@@ -13,7 +7,6 @@ namespace WindowsFormsApp4
     public partial class Basic_Window : Form
     {
         Point p;
-        string dateTmp = "";
         public Basic_Window()
         {
             InitializeComponent();
@@ -74,6 +67,59 @@ namespace WindowsFormsApp4
             else
                 MessageBox.Show("Товар не выбран.");            
         }
+        private void Zakaz_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (Nal_button.Checked || Card_button.Checked)
+            {
+                if (phone.Text != "Телефон" && Name_user.Text != "Имя")
+                {
+                    string[] tovar1;
+                    string[] tovar2;
+                    string pokupka = "";
+                    int sum = 0;
+
+                    if (Amd_comboBox.SelectedIndex != -1)
+                    {
+                        tovar1 = Amd_comboBox.Text.Split();
+                        pokupka += tovar1[0];
+                        sum += Convert.ToInt32(tovar1[1].Trim('$'));
+                    }
+                    else if (Intel_comboBox.SelectedIndex != -1)
+                    {
+                        tovar1 = Intel_comboBox.Text.Split();
+                        pokupka += tovar1[0];
+                        sum += Convert.ToInt32(tovar1[1].Trim('$'));
+                    }
+                    if (Radeon_comboBox.SelectedIndex != -1)
+                    {
+                        tovar2 = Radeon_comboBox.Text.Split();
+                        if (pokupka.Length > 0) pokupka += '\n';
+                        pokupka += tovar2[0];
+                        sum += Convert.ToInt32(tovar2[1].Trim('$'));
+                    }
+                    else if (Nvidia_comboBox.SelectedIndex != -1)
+                    {
+                        tovar2 = Nvidia_comboBox.Text.Split();
+                        if (pokupka.Length > 0) pokupka += '\n';
+                        pokupka += tovar2[0];
+                        sum += Convert.ToInt32(tovar2[1].Trim('$'));
+                    }
+
+
+
+
+                    MessageBox.Show("Имя клиента: " + Name_user.Text + "\nТелефон клиента:" + phone.Text +
+                        "\nДата доставки: " + dateTimePicker1.Text +
+                        "\n~~~~~~~~~~~~~~~~~~\nСписок товаров:\n" + pokupka +
+                        "\n~~~~~~~~~~~~~~~~~~\nСумма покупки: " + sum + '$');
+                }
+                else
+                    MessageBox.Show("Нужно заполнить Имя и Телефон");
+            }
+            else
+                if (Zakaz.Text == "Оформить заказ")
+                MessageBox.Show("Способ оплаты не выбран.");
+        }
         private void Back_button_Click(object sender, EventArgs e)
         {
             Radeon_comboBox.Visible = true;
@@ -121,6 +167,7 @@ namespace WindowsFormsApp4
         {
             if (!Nal_button.Checked) Nal_button.ForeColor = Color.WhiteSmoke;
         }
+
         //Comboboxes
         private void Intel_comboBox_MouseClick(object sender, MouseEventArgs e)
         {
@@ -171,68 +218,7 @@ namespace WindowsFormsApp4
             BackgroundImage = Properties.Resources.gf_30_series_kit_gtmk_3080ti_2c50_p_2x;
         }
 
-        //DateTimePicker
-        private void dateTimePicker1_MouseDown(object sender, MouseEventArgs e)
-        {
-         dateTmp = dateTimePicker1.Text;
-
-            //MessageBox.Show(Convert.ToString(dateTimePicker1.MinDate.Day));
-        }
-
-        private void Zakaz_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (Nal_button.Checked || Card_button.Checked)
-            {
-                if (phone.Text != "Телефон" && Name_user.Text != "Имя")
-                {                 
-                    string[] tovar1;
-                    string[] tovar2;
-                    string pokupka = "";
-                    int sum = 0;
-
-                    if (Amd_comboBox.SelectedIndex != -1)
-                    {
-                        tovar1 = Amd_comboBox.Text.Split();
-                        pokupka += tovar1[0];
-                        sum += Convert.ToInt32(tovar1[1].Trim('$'));
-                    }
-                    else if (Intel_comboBox.SelectedIndex != -1)
-                    {
-                        tovar1 = Intel_comboBox.Text.Split();
-                        pokupka += tovar1[0];
-                        sum += Convert.ToInt32(tovar1[1].Trim('$'));
-                    }
-                    if (Radeon_comboBox.SelectedIndex != -1)
-                    {
-                        tovar2 = Radeon_comboBox.Text.Split();
-                        if (pokupka.Length > 0) pokupka += '\n';
-                        pokupka += tovar2[0];
-                        sum += Convert.ToInt32(tovar2[1].Trim('$'));
-                    }
-                    else if (Nvidia_comboBox.SelectedIndex != -1)
-                    {
-                        tovar2 = Nvidia_comboBox.Text.Split();
-                        if (pokupka.Length > 0) pokupka += '\n';
-                        pokupka += tovar2[0];
-                        sum += Convert.ToInt32(tovar2[1].Trim('$'));
-                    }
-
-                    
-
-
-                    MessageBox.Show("Имя клиента: " + Name_user.Text + "\nТелефон клиента:" + phone.Text +
-                        "\nДата доставки: "+ dateTimePicker1.Text +
-                        "\n~~~~~~~~~~~~~~~~~~\nСписок товаров:\n" + pokupka + 
-                        "\n~~~~~~~~~~~~~~~~~~\nСумма покупки: " + sum + '$');
-                }                    
-                else
-                    MessageBox.Show("Нужно заполнить Имя и Телефон");
-            }
-            else
-                if (Zakaz.Text == "Оформить заказ")
-                MessageBox.Show("Способ оплаты не выбран.");
-        }
-
+        //TextBoxes
         private void Name_MouseDown(object sender, MouseEventArgs e)
         {
             if (Name_user.Text == "Имя")
@@ -277,8 +263,6 @@ namespace WindowsFormsApp4
                         break;
                     }
             }
-        }
-
-      
+        }   
     }
 }
